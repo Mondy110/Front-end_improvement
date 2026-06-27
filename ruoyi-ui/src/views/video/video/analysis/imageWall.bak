@@ -1,0 +1,313 @@
+<template>
+  <div class="image-wall-container">
+    <!-- 页面标题 -->
+    <div class="header">
+      <h2>照片墙</h2>
+      <el-button type="primary" @click="goBack">返回</el-button>
+    </div>
+
+    <!-- 加载提示 -->
+    <div v-if="loading" class="loading">
+      <el-skeleton style="width: 100%" :rows="5" animated />
+    </div>
+
+    <!-- 照片墙内容 -->
+    <div v-else>
+      <!-- 控制面板 -->
+      <div class="control-panel">
+        <el-select
+          v-model="step"
+          placeholder="选择步长"
+          @change="handleStepChange"
+          style="width: 120px;"
+        >
+          <el-option
+            v-for="item in stepOptions"
+            :key="item"
+            :label="`步长 ${item}`"
+            :value="item"
+          />
+        </el-select>
+        <div class="pagination-info">
+          总计 {{ totalImages }} 张图片，选择 {{ images.length }} 张图片
+        </div>
+      </div>
+
+      <!-- 照片网格 -->
+      <div v-if="images.length > 0" class="image-grid">
+        <div
+          v-for="(image, index) in images"
+          :key="getImageKey(image, index)"
+          class="image-item"
+        >
+          <el-image
+            :src="getImageUrl(image)"
+            fit="cover"
+            :preview-src-list="previewList"
+            :initial-index="index"
+            lazy
+            preview-teleported
+          >
+            <template #placeholder>
+              <div class="image-placeholder">
+                <el-icon><picture-filled /></el-icon>
+              </div>
+            </template>
+            <template #error>
+              <div class="image-error">
+                <el-icon><picture /></el-icon>
+                <span>加载失败</span>
+              </div>
+            </template>
+          </el-image>
+        </div>
+      </div>
+
+      <!-- 无图片提示 -->
+      <div v-else class="no-images">
+        <el-empty description="暂无图片" />
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup name="ImageWall">
+// 导入Vue相关API和第三方库
+import { ref, computed, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { Picture, PictureFilled } from '@element-plus/icons-vue'
+import { getImageList, getStepOptions } from '@/api/video/imageWall'
+import modal from '@/plugins/modal'
+
+// 定义组件名称
+defineOptions({
+  name: 'ImageWall'
+})
+
+// --- 响应式状态定义 ---
+// 路由相关
+const route = useRoute()
+const router = useRouter()
+
+// 页面加载状态
+const loading = ref(true)
+
+// 视频ID
+const videoId = ref(null)
+
+// 图片列表
+const images = ref([])
+
+// 图片相关
+const totalImages = ref(0)
+const step = ref(6)
+
+// 步长选项
+const stepOptions = ref([])
+
+// --- 计算属性 ---
+// 预览图片列表
+const previewList = computed(() => {
+  return images.value.map(image => getImageUrl(image))
+})
+
+// --- 方法定义 ---
+/**
+ * @description 获取图片列表
+ */
+async function fetchImages() {
+  try {
+    loading.value = true
+    const response = await getImageList(videoId.value, step.value)
+    if (response.code === 200) {
+      // 修改数据访问方式,直接从response获取数据而不是response.data
+      images.value = response.images || []
+      totalImages.value = response.totalImages || 0
+      step.value = response.step || 6
+    } else {
+      modal.msgError(response.msg || '获取图片列表失败')
+    }
+  } catch (error) {
+    console.error('获取图片列表失败:', error)
+    modal.msgError('获取图片列表失败,请稍后重试')
+  } finally {
+    loading.value = false
+  }
+}
+
+/**
+ * @description 获取步长选项
+ */
+async function fetchStepOptions() {
+  try {
+    const response = await getStepOptions()
+    if (response.code === 200) {
+      stepOptions.value = response.data || [6, 12, 18, 24]
+    }
+  } catch (error) {
+    console.error('获取步长选项失败:', error)
+    // 使用默认选项
+    stepOptions.value = [6, 12, 18, 24]
+  }
+}
+
+/**
+ * @description 处理步长变化
+ */
+function handleStepChange() {
+  fetchImages()
+}
+
+/**
+ * @description 获取图片URL
+ * @param {Object|string} image - 图片信息对象(包含path和token)或图片路径字符串
+ * @returns {string} - 图片URL
+ */
+function getImageUrl(image) {
+  // 如果image是字符串(旧格式)
+  if (typeof image === 'string') {
+    return `${import.meta.env.VITE_APP_BASE_API || ''}/video/imageWall/image?token=${image}`
+  }
+
+  // 新格式: image是对象,包含path和token
+  const baseUrl = import.meta.env.VITE_APP_BASE_API || ''
+  return `${baseUrl}/video/imageWall/image?token=${image.token}`
+}
+
+/**
+ * @description 为图片生成唯一的key
+ * @param {Object|string} image - 图片信息对象或路径
+ * @param {number} index - 索引
+ * @returns {string} - 唯一key
+ */
+function getImageKey(image, index) {
+  const key = typeof image === 'string' ? image : (image.path || image.token)
+  return `${key}-${index}`
+}
+
+/**
+ * @description 返回上一页
+ */
+function goBack() {
+  router.go(-1)
+}
+
+// --- 生命周期钩子 ---
+/**
+ * @description 组件挂载后执行
+ */
+onMounted(() => {
+  // 从路由参数获取视频ID
+  videoId.value = route.params.videoId || route.query.videoId
+
+  if (!videoId.value) {
+    modal.msgError('缺少视频ID参数')
+    router.go(-1)
+    return
+  }
+
+  // 获取数据
+  fetchStepOptions()
+  fetchImages()
+})
+</script>
+
+<style scoped>
+.image-wall-container {
+  padding: 20px;
+  background-color: var(--el-bg-color-page);
+  min-height: 100%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--el-border-color-lighter);
+}
+
+.header h2 {
+  margin: 0;
+  color: var(--el-text-color-primary);
+}
+
+.loading {
+  padding: 20px;
+}
+
+.control-panel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: var(--el-bg-color-overlay);
+  border-radius: 4px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  gap: 20px;
+}
+
+.pagination-info {
+  font-size: 14px;
+  color: var(--el-text-color-regular);
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.image-item {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 6px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  background-color: var(--el-bg-color-overlay);
+}
+
+.image-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.15);
+}
+
+.image-item :deep(.el-image) {
+  width: 100%;
+  height: 100%;
+}
+
+.image-placeholder,
+.image-error {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: var(--el-fill-color-light);
+  color: var(--el-text-color-secondary);
+}
+
+.image-placeholder .el-icon,
+.image-error .el-icon {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.image-error span {
+  font-size: 14px;
+}
+
+.no-images {
+  padding: 50px 0;
+  background-color: var(--el-bg-color-overlay);
+  border-radius: 4px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+</style>
