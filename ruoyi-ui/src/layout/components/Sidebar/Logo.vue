@@ -31,18 +31,12 @@ const sideTheme = computed(() => settingsStore.sideTheme)
 
 // 获取Logo背景色
 const getLogoBackground = computed(() => {
-  if (settingsStore.isDark) {
-    return 'var(--sidebar-bg)'
-  }
-  return sideTheme.value === 'theme-dark' ? variables.menuBg : variables.menuLightBg
+  return 'var(--el-menu-bg-color)'
 })
 
 // 获取Logo文字颜色
 const getLogoTextColor = computed(() => {
-  if (settingsStore.isDark) {
-    return 'var(--sidebar-text)'
-  }
-  return sideTheme.value === 'theme-dark' ? '#fff' : '#0F172A'
+  return 'var(--el-aside-logo-text-color)'
 })
 </script>
 

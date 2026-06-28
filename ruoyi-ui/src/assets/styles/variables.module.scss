@@ -90,6 +90,15 @@ $--color-info: #64748B;
   --med-border: #E2E8F0;
   --med-accent-blue: #1E3A5F;
   --med-accent-cyan: #06B6D4;
+
+  /* 首页横幅 - 亮色模式 teal 渐变 */
+  --med-banner-from: #0F766E;
+  --med-banner-via: #0D9488;
+  --med-banner-to: #14B8A6;
+  --med-banner-glow: rgba(255, 255, 255, 0.15);
+  --med-banner-title: #FFFFFF;
+  --med-banner-desc: rgba(255, 255, 255, 0.85);
+  --med-banner-deco: rgba(255, 255, 255, 0.5);
 }
 
 // 暗黑模式变量
@@ -145,6 +154,15 @@ html.dark {
   --med-text-body: #CBD5E1;
   --med-text-muted: #64748B;
   --med-border: #334155;
+
+  /* 首页横幅 - 暗黑模式深蓝灰渐变 */
+  --med-banner-from: #0C1222;
+  --med-banner-via: #111B2E;
+  --med-banner-to: #0F1B2D;
+  --med-banner-glow: rgba(20, 184, 166, 0.12);
+  --med-banner-title: #F0FDFA;
+  --med-banner-desc: #94A3B8;
+  --med-banner-deco: #14B8A6;
 
   /* 侧边栏菜单覆盖 */
    .sidebar-container {

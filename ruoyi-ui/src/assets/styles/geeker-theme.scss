@@ -23,7 +23,7 @@ $primary-color: var(--el-color-primary);
 //    Inverted mode values can be applied at runtime via JS.
 // ---------------------------------------------------------------------------
 :root {
-  /* Aside */
+  /* Aside - 亮色模式 + 浅色侧边栏 */
   --el-aside-logo-text-color: #1E293B;
   --el-aside-border-color: #E2E8F0;
 
@@ -34,7 +34,7 @@ $primary-color: var(--el-color-primary);
   --el-header-text-color-regular: #64748B;
   --el-header-border-color: #E2E8F0;
 
-  /* Menu */
+  /* Menu - 亮色模式 + 浅色侧边栏 */
   --el-menu-bg-color: #ffffff;
   --el-menu-hover-bg-color: #F0FDFA;
   --el-menu-active-bg-color: #F0FDFA;
@@ -45,10 +45,28 @@ $primary-color: var(--el-color-primary);
 }
 
 // ---------------------------------------------------------------------------
+// 2b. 亮色模式 + 深色侧边栏（默认配置）
+//     通过 html.theme-dark-sidebar 类切换，由 App.vue 动态控制
+// ---------------------------------------------------------------------------
+html.theme-dark-sidebar {
+  /* Aside - 亮色模式 + 深色侧边栏 */
+  --el-aside-logo-text-color: #E2E8F0;
+  --el-aside-border-color: #162236;
+
+  /* Menu - 亮色模式 + 深色侧边栏 */
+  --el-menu-bg-color: #0F1B2D;
+  --el-menu-hover-bg-color: #162236;
+  --el-menu-active-bg-color: #1E293B;
+  --el-menu-text-color: #94A3B8;
+  --el-menu-active-color: #14B8A6;
+  --el-menu-hover-text-color: #E2E8F0;
+}
+
+// ---------------------------------------------------------------------------
 // 3. Dark Mode CSS Variable Overrides
 // ---------------------------------------------------------------------------
 html.dark {
-  /* Aside dark */
+  /* Aside dark - 暗黑模式统一下深色侧边栏 */
   --el-aside-logo-text-color: #E2E8F0;
   --el-aside-border-color: #1E293B;
 

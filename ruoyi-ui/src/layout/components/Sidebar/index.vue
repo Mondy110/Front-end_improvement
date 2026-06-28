@@ -45,18 +45,12 @@ const isCollapse = computed(() => !appStore.sidebar.opened)
 
 // 获取菜单背景色
 const getMenuBackground = computed(() => {
-  if (settingsStore.isDark) {
-    return 'var(--sidebar-bg)'
-  }
-  return sideTheme.value === 'theme-dark' ? variables.menuBg : variables.menuLightBg
+  return 'var(--el-menu-bg-color)'
 })
 
 // 获取菜单文字颜色
 const getMenuTextColor = computed(() => {
-  if (settingsStore.isDark) {
-    return 'var(--sidebar-text)'
-  }
-  return sideTheme.value === 'theme-dark' ? variables.menuText : variables.menuLightText
+  return 'var(--el-menu-text-color)'
 })
 
 const activeMenu = computed(() => {

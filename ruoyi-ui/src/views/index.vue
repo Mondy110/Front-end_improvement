@@ -168,7 +168,7 @@ $border-color: #E2E8F0;
 
 /* ===== 欢迎横幅 ===== */
 .welcome-banner {
-  background: linear-gradient(135deg, $bg-deep 0%, #111B2E 50%, #0F1B2D 100%);
+  background: linear-gradient(135deg, var(--med-banner-from, #0F766E) 0%, var(--med-banner-via, #0D9488) 40%, var(--med-banner-to, #14B8A6) 100%);
   border-radius: 12px;
   padding: 32px 36px;
   margin-bottom: 20px;
@@ -182,7 +182,7 @@ $border-color: #E2E8F0;
     right: 0;
     width: 300px;
     height: 100%;
-    background: radial-gradient(circle at 80% 50%, rgba($primary, 0.12) 0%, transparent 70%);
+    background: radial-gradient(circle at 80% 50%, var(--med-banner-glow, rgba(255,255,255,0.15)) 0%, transparent 70%);
     pointer-events: none;
   }
 
@@ -197,20 +197,20 @@ $border-color: #E2E8F0;
   .banner-title {
     font-size: 24px;
     font-weight: 700;
-    color: #F0FDFA;
+    color: var(--med-banner-title, #FFFFFF);
     margin: 0 0 8px;
     letter-spacing: 1px;
   }
 
   .banner-desc {
     font-size: 14px;
-    color: $text-muted;
+    color: var(--med-banner-desc, rgba(255,255,255,0.85));
     margin: 0;
     letter-spacing: 0.5px;
   }
 
   .banner-decoration {
-    color: $primary-light;
+    color: var(--med-banner-deco, rgba(255,255,255,0.5));
     width: 200px;
     flex-shrink: 0;
 
@@ -222,31 +222,6 @@ $border-color: #E2E8F0;
       stroke-dasharray: 800;
       stroke-dashoffset: 800;
       animation: ecgDash 4s linear infinite;
-    }
-  }
-}
-
-/* 亮色模式下横幅使用 teal 渐变 */
-:global(html:not(.dark)) .welcome-banner {
-  background: linear-gradient(135deg, #0F766E 0%, #0D9488 40%, #14B8A6 100%);
-
-  &::before {
-    background: radial-gradient(circle at 80% 50%, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
-  }
-
-  .banner-title {
-    color: #FFFFFF;
-  }
-
-  .banner-desc {
-    color: rgba(255, 255, 255, 0.85);
-  }
-
-  .banner-decoration {
-    color: rgba(255, 255, 255, 0.5);
-
-    .ecg-wave {
-      stroke: currentColor;
     }
   }
 }
@@ -524,23 +499,13 @@ $border-color: #E2E8F0;
   }
 
   .welcome-banner {
-    background: linear-gradient(135deg, #0C1222 0%, #111B2E 50%, #0F1B2D 100%);
-
-    &::before {
-      background: radial-gradient(circle at 80% 50%, rgba(20, 184, 166, 0.12) 0%, transparent 70%);
-    }
-
-    .banner-title {
-      color: #F0FDFA;
-    }
-
-    .banner-desc {
-      color: #94A3B8;
-    }
-
-    .banner-decoration {
-      color: #14B8A6;
-    }
+    --med-banner-from: #0C1222;
+    --med-banner-via: #111B2E;
+    --med-banner-to: #0F1B2D;
+    --med-banner-glow: rgba(20, 184, 166, 0.12);
+    --med-banner-title: #F0FDFA;
+    --med-banner-desc: #94A3B8;
+    --med-banner-deco: #14B8A6;
   }
 
   .stat-card {
