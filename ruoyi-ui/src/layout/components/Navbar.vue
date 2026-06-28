@@ -1,39 +1,32 @@
 <template>
   <div class="navbar">
-    <hamburger id="hamburger-container" :is-active="appStore.sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-    <breadcrumb v-if="!settingsStore.topNav" id="breadcrumb-container" class="breadcrumb-container" />
-    <top-nav v-if="settingsStore.topNav" id="topmenu-container" class="topmenu-container" />
+    <!-- 左侧工具栏：折叠按钮 + 面包屑 -->
+    <div class="tool-bar-lf">
+      <hamburger id="hamburger-container" :is-active="appStore.sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+      <breadcrumb v-if="!settingsStore.topNav" id="breadcrumb-container" class="breadcrumb-container" />
+      <top-nav v-if="settingsStore.topNav" id="topmenu-container" class="topmenu-container" />
+    </div>
 
-    <div class="right-menu">
+    <!-- 右侧工具栏 -->
+    <div class="tool-bar-ri">
       <template v-if="appStore.device !== 'mobile'">
-        <header-search id="header-search" class="right-menu-item" />
-
-        <el-tooltip content="源码地址" effect="dark" placement="bottom">
-          <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
-        </el-tooltip>
-
-        <el-tooltip content="文档地址" effect="dark" placement="bottom">
-          <ruo-yi-doc id="ruoyi-doc" class="right-menu-item hover-effect" />
-        </el-tooltip>
-
-        <screenfull id="screenfull" class="right-menu-item hover-effect" />
-
-        <el-tooltip content="主题模式" effect="dark" placement="bottom">
-          <div class="right-menu-item hover-effect theme-switch-wrapper" @click="toggleTheme">
-            <svg-icon v-if="settingsStore.isDark" icon-class="sunny" />
-            <svg-icon v-if="!settingsStore.isDark" icon-class="moon" />
-          </div>
-        </el-tooltip>
-
-        <el-tooltip content="布局大小" effect="dark" placement="bottom">
-          <size-select id="size-select" class="right-menu-item hover-effect" />
-        </el-tooltip>
+        <div class="header-icon">
+          <header-search id="header-search" class="header-icon-item" />
+          <screenfull id="screenfull" class="header-icon-item" />
+          <el-tooltip content="主题模式" effect="dark" placement="bottom">
+            <div class="header-icon-item theme-switch-wrapper" @click="toggleTheme">
+              <svg-icon v-if="settingsStore.isDark" icon-class="sunny" />
+              <svg-icon v-if="!settingsStore.isDark" icon-class="moon" />
+            </div>
+          </el-tooltip>
+          <size-select id="size-select" class="header-icon-item" />
+        </div>
       </template>
 
-      <el-dropdown @command="handleCommand" class="avatar-container right-menu-item hover-effect" trigger="hover">
+      <el-dropdown @command="handleCommand" class="avatar-container" trigger="hover">
         <div class="avatar-wrapper">
           <img :src="userStore.avatar" class="user-avatar" />
-          <span class="user-nickname"> {{ userStore.nickName }} </span>
+          <span class="user-nickname">{{ userStore.nickName }}</span>
         </div>
         <template #dropdown>
           <el-dropdown-menu>
@@ -46,7 +39,8 @@
           </el-dropdown-menu>
         </template>
       </el-dropdown>
-      <div class="right-menu-item hover-effect setting" @click="setLayout" v-if="settingsStore.showSettings">
+
+      <div v-if="settingsStore.showSettings" class="header-icon-item setting-btn" @click="setLayout">
         <svg-icon icon-class="more-up" />
       </div>
     </div>
@@ -61,8 +55,6 @@ import Hamburger from '@/components/Hamburger'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import HeaderSearch from '@/components/HeaderSearch'
-import RuoYiGit from '@/components/RuoYi/Git'
-import RuoYiDoc from '@/components/RuoYi/Doc'
 import useAppStore from '@/store/modules/app'
 import useUserStore from '@/store/modules/user'
 import useSettingsStore from '@/store/modules/settings'
@@ -110,114 +102,141 @@ function toggleTheme() {
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .navbar {
-  height: 50px;
-  overflow: hidden;
-  position: relative;
-  background: var(--navbar-bg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 55px;
+  padding: 0 15px;
+  background: var(--el-header-bg-color);
+  border-bottom: 1px solid var(--el-header-border-color);
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+}
+
+/* ========== 左侧工具栏 ========== */
+.tool-bar-lf {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  flex: 1;
 
   .hamburger-container {
-    line-height: 46px;
-    height: 100%;
-    float: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 55px;
     cursor: pointer;
     transition: background 0.3s;
-    -webkit-tap-highlight-color: transparent;
+    margin-right: 10px;
+    color: var(--el-header-text-color);
 
     &:hover {
-      background: rgba(0, 0, 0, 0.025);
+      background: rgba(0, 0, 0, 0.04);
     }
   }
 
   .breadcrumb-container {
-    float: left;
+    display: flex;
+    align-items: center;
   }
 
   .topmenu-container {
     position: absolute;
     left: 50px;
   }
+}
 
-  .errLog-container {
-    display: inline-block;
-    vertical-align: top;
-  }
+/* ========== 右侧工具栏 ========== */
+.tool-bar-ri {
+  display: flex;
+  align-items: center;
 
-  .right-menu {
-    float: right;
-    height: 100%;
-    line-height: 50px;
+  .header-icon {
     display: flex;
+    align-items: center;
 
-    &:focus {
-      outline: none;
-    }
-
-    .right-menu-item {
-      display: inline-block;
-      padding: 0 8px;
-      height: 100%;
+    .header-icon-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 55px;
       font-size: 18px;
-      color: #5a5e66;
-      vertical-align: text-bottom;
+      color: var(--el-header-text-color);
+      cursor: pointer;
+      transition: background 0.3s;
 
-      &.hover-effect {
-        cursor: pointer;
-        transition: background 0.3s;
-
-        &:hover {
-          background: rgba(0, 0, 0, 0.025);
-        }
+      &:hover {
+        background: rgba(0, 0, 0, 0.04);
       }
 
       &.theme-switch-wrapper {
-        display: flex;
-        align-items: center;
-
         svg {
           transition: transform 0.3s;
-          
           &:hover {
             transform: scale(1.15);
           }
         }
       }
     }
+  }
 
-    .avatar-container {
-      margin-right: 0px;
-      padding-right: 0px;
+  .setting-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 55px;
+    font-size: 18px;
+    color: var(--el-header-text-color);
+    cursor: pointer;
+    transition: background 0.3s;
 
-      .avatar-wrapper {
-        margin-top: 10px;
-        right: 5px;
-        position: relative;
+    &:hover {
+      background: rgba(0, 0, 0, 0.04);
+    }
+  }
+}
 
-        .user-avatar {
-          cursor: pointer;
-          width: 30px;
-          height: 30px;
-          border-radius: 50%;
-        }
+/* ========== 头像区域 ========== */
+.avatar-container {
+  display: flex;
+  align-items: center;
+  height: 55px;
+  padding: 0 8px;
+  cursor: pointer;
+  transition: background 0.3s;
 
-        .user-nickname{
-          position: relative;
-          left: 5px;
-          bottom: 10px;
-          font-size: 14px;
-          font-weight: bold;
-        }
+  &:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
 
-        i {
-          cursor: pointer;
-          position: absolute;
-          right: -20px;
-          top: 25px;
-          font-size: 12px;
-        }
-      }
+  .avatar-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .user-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--el-header-border-color);
+      transition: border-color 0.3s;
+    }
+
+    .user-nickname {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--el-header-text-color);
+      white-space: nowrap;
+    }
+
+    &:hover .user-avatar {
+      border-color: var(--el-color-primary);
     }
   }
 }

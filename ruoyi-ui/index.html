@@ -7,22 +7,15 @@
   <meta name="renderer" content="webkit">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <link rel="icon" href="/favicon.ico">
-  <title>若依管理系统</title>
+  <title>医学动作智能评测系统</title>
   <!--[if lt IE 11]><script>window.location.href='/html/ie.html';</script><![endif]-->
   <style>
     html,
     body,
     #app {
       height: 100%;
-      margin: 0px;
-      padding: 0px;
-    }
-
-    .chromeframe {
-      margin: 0.2em 0;
-      background: #ccc;
-      color: #000;
-      padding: 0.2em 0;
+      margin: 0;
+      padding: 0;
     }
 
     #loader-wrapper {
@@ -32,170 +25,216 @@
       width: 100%;
       height: 100%;
       z-index: 999999;
+      background: #0C1222;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
     }
 
-    #loader {
-      display: block;
-      position: relative;
-      left: 50%;
+    /* 背景脉搏波装饰 */
+    #loader-wrapper::before {
+      content: '';
+      position: absolute;
       top: 50%;
-      width: 150px;
-      height: 150px;
-      margin: -75px 0 0 -75px;
-      border-radius: 50%;
-      border: 3px solid transparent;
-      border-top-color: #FFF;
-      -webkit-animation: spin 2s linear infinite;
-      -ms-animation: spin 2s linear infinite;
-      -moz-animation: spin 2s linear infinite;
-      -o-animation: spin 2s linear infinite;
-      animation: spin 2s linear infinite;
+      left: 0;
+      width: 200%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(13,148,136,0.15) 20%, rgba(13,148,136,0.4) 50%, rgba(13,148,136,0.15) 80%, transparent 100%);
+      animation: pulseLine 3s ease-in-out infinite;
+    }
+
+    @keyframes pulseLine {
+      0%, 100% { opacity: 0.3; transform: translateY(-50%) scaleX(0.8); }
+      50% { opacity: 1; transform: translateY(-50%) scaleX(1); }
+    }
+
+    /* 心电图波形 */
+    .ecg-line {
+      position: absolute;
+      top: 50%;
+      left: -100%;
+      width: 300%;
+      height: 60px;
+      transform: translateY(-50%);
+      opacity: 0.12;
+    }
+
+    .ecg-line svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .ecg-path {
+      stroke: #0D9488;
+      stroke-width: 2;
+      fill: none;
+      stroke-dasharray: 1200;
+      stroke-dashoffset: 1200;
+      animation: ecgDraw 4s linear infinite;
+    }
+
+    @keyframes ecgDraw {
+      to { stroke-dashoffset: 0; }
+    }
+
+    /* 加载图标 - 医学十字+脉冲 */
+    #loader {
+      position: relative;
+      width: 80px;
+      height: 80px;
       z-index: 1001;
     }
 
-    #loader:before {
-      content: "";
-      position: absolute;
-      top: 5px;
-      left: 5px;
-      right: 5px;
-      bottom: 5px;
-      border-radius: 50%;
-      border: 3px solid transparent;
-      border-top-color: #FFF;
-      -webkit-animation: spin 3s linear infinite;
-      -moz-animation: spin 3s linear infinite;
-      -o-animation: spin 3s linear infinite;
-      -ms-animation: spin 3s linear infinite;
-      animation: spin 3s linear infinite;
-    }
-
-    #loader:after {
-      content: "";
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      right: 15px;
-      bottom: 15px;
-      border-radius: 50%;
-      border: 3px solid transparent;
-      border-top-color: #FFF;
-      -moz-animation: spin 1.5s linear infinite;
-      -o-animation: spin 1.5s linear infinite;
-      -ms-animation: spin 1.5s linear infinite;
-      -webkit-animation: spin 1.5s linear infinite;
-      animation: spin 1.5s linear infinite;
-    }
-
-
-    @-webkit-keyframes spin {
-      0% {
-        -webkit-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
-        transform: rotate(0deg);
-      }
-
-      100% {
-        -webkit-transform: rotate(360deg);
-        -ms-transform: rotate(360deg);
-        transform: rotate(360deg);
-      }
-    }
-
-    @keyframes spin {
-      0% {
-        -webkit-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
-        transform: rotate(0deg);
-      }
-
-      100% {
-        -webkit-transform: rotate(360deg);
-        -ms-transform: rotate(360deg);
-        transform: rotate(360deg);
-      }
-    }
-
-
-    #loader-wrapper .loader-section {
-      position: fixed;
-      top: 0;
-      width: 51%;
+    #loader svg {
+      width: 100%;
       height: 100%;
-      background: #7171C6;
-      z-index: 1000;
-      -webkit-transform: translateX(0);
-      -ms-transform: translateX(0);
-      transform: translateX(0);
     }
 
-    #loader-wrapper .loader-section.section-left {
-      left: 0;
+    .loader-ring {
+      fill: none;
+      stroke: #0D9488;
+      stroke-width: 2;
+      stroke-dasharray: 200;
+      stroke-dashoffset: 200;
+      animation: ringDraw 2s ease-in-out infinite;
     }
 
-    #loader-wrapper .loader-section.section-right {
-      right: 0;
+    .loader-ring-outer {
+      animation-delay: 0s;
+      stroke-width: 1.5;
+      opacity: 0.4;
     }
 
-
-    .loaded #loader-wrapper .loader-section.section-left {
-      -webkit-transform: translateX(-100%);
-      -ms-transform: translateX(-100%);
-      transform: translateX(-100%);
-      -webkit-transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
-      transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
+    .loader-ring-inner {
+      animation-delay: 0.4s;
+      stroke-width: 2;
+      opacity: 0.7;
     }
 
-    .loaded #loader-wrapper .loader-section.section-right {
-      -webkit-transform: translateX(100%);
-      -ms-transform: translateX(100%);
-      transform: translateX(100%);
-      -webkit-transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
-      transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
-    }
-
-    .loaded #loader {
+    .loader-core {
+      fill: #0D9488;
       opacity: 0;
-      -webkit-transition: all 0.3s ease-out;
-      transition: all 0.3s ease-out;
+      animation: corePulse 2s ease-in-out infinite;
     }
 
+    .loader-cross {
+      stroke: #14B8A6;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      opacity: 0;
+      animation: crossFadeIn 2s ease-in-out infinite;
+    }
+
+    @keyframes ringDraw {
+      0% { stroke-dashoffset: 200; opacity: 0.2; }
+      50% { stroke-dashoffset: 0; opacity: 1; }
+      100% { stroke-dashoffset: -200; opacity: 0.2; }
+    }
+
+    @keyframes corePulse {
+      0%, 100% { opacity: 0.3; r: 4; }
+      50% { opacity: 0.9; r: 6; }
+    }
+
+    @keyframes crossFadeIn {
+      0%, 20% { opacity: 0; }
+      40%, 70% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    /* 脉冲光点 */
+    .pulse-dot {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #14B8A6;
+      opacity: 0;
+      animation: pulseDot 3s ease-in-out infinite;
+    }
+
+    .pulse-dot-1 { top: 25%; left: 30%; animation-delay: 0s; }
+    .pulse-dot-2 { top: 65%; right: 25%; animation-delay: 1s; }
+    .pulse-dot-3 { bottom: 30%; left: 45%; animation-delay: 2s; }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 0.6; transform: scale(1.5); }
+    }
+
+    /* 加载文字 */
+    #loader-wrapper .load_title {
+      font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, sans-serif;
+      color: rgba(148, 163, 184, 0.8);
+      font-size: 15px;
+      width: 100%;
+      text-align: center;
+      z-index: 9999;
+      position: relative;
+      margin-top: 36px;
+      letter-spacing: 1px;
+    }
+
+    #loader-wrapper .load_subtitle {
+      font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, sans-serif;
+      color: #0D9488;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      margin-bottom: 8px;
+      z-index: 9999;
+      position: relative;
+    }
+
+    /* 进度条 */
+    .loader-progress {
+      width: 200px;
+      height: 2px;
+      background: rgba(13, 148, 136, 0.15);
+      border-radius: 1px;
+      margin-top: 20px;
+      position: relative;
+      z-index: 9999;
+      overflow: hidden;
+    }
+
+    .loader-progress::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -40%;
+      width: 40%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, #0D9488, transparent);
+      border-radius: 1px;
+      animation: progressSlide 1.5s ease-in-out infinite;
+    }
+
+    @keyframes progressSlide {
+      to { left: 100%; }
+    }
+
+    /* 加载完成动画 */
     .loaded #loader-wrapper {
+      opacity: 0;
       visibility: hidden;
-      -webkit-transform: translateY(-100%);
-      -ms-transform: translateY(-100%);
-      transform: translateY(-100%);
-      -webkit-transition: all 0.3s 1s ease-out;
-      transition: all 0.3s 1s ease-out;
+      transition: opacity 0.5s ease, visibility 0s 0.5s;
+    }
+
+    .loaded #loader,
+    .loaded .load_subtitle,
+    .loaded .load_title,
+    .loaded .loader-progress,
+    .loaded .ecg-line,
+    .loaded .pulse-dot {
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
     .no-js #loader-wrapper {
       display: none;
-    }
-
-    .no-js h1 {
-      color: #222222;
-    }
-
-    #loader-wrapper .load_title {
-      font-family: 'Open Sans';
-      color: #FFF;
-      font-size: 19px;
-      width: 100%;
-      text-align: center;
-      z-index: 9999999999999;
-      position: absolute;
-      top: 60%;
-      opacity: 1;
-      line-height: 30px;
-    }
-
-    #loader-wrapper .load_title span {
-      font-weight: normal;
-      font-style: italic;
-      font-size: 13px;
-      color: #FFF;
-      opacity: 0.5;
     }
   </style>
 </head>
@@ -203,10 +242,32 @@
 <body>
   <div id="app">
     <div id="loader-wrapper">
-      <div id="loader"></div>
-      <div class="loader-section section-left"></div>
-      <div class="loader-section section-right"></div>
+      <!-- 心电图波形装饰 -->
+      <div class="ecg-line">
+        <svg viewBox="0 0 1200 60" preserveAspectRatio="none">
+          <path class="ecg-path" d="M0,30 L100,30 L120,30 L130,10 L140,50 L150,5 L160,55 L170,30 L190,30 L300,30 L400,30 L420,30 L430,10 L440,50 L450,5 L460,55 L470,30 L490,30 L600,30 L700,30 L720,30 L730,10 L740,50 L750,5 L760,55 L770,30 L790,30 L900,30 L1000,30 L1020,30 L1030,10 L1040,50 L1050,5 L1060,55 L1070,30 L1090,30 L1200,30" />
+        </svg>
+      </div>
+
+      <!-- 脉冲光点 -->
+      <div class="pulse-dot pulse-dot-1"></div>
+      <div class="pulse-dot pulse-dot-2"></div>
+      <div class="pulse-dot pulse-dot-3"></div>
+
+      <!-- 加载图标 -->
+      <div id="loader">
+        <svg viewBox="0 0 80 80">
+          <circle class="loader-ring loader-ring-outer" cx="40" cy="40" r="36" />
+          <circle class="loader-ring loader-ring-inner" cx="40" cy="40" r="26" />
+          <circle class="loader-core" cx="40" cy="40" r="4" />
+          <line class="loader-cross" x1="40" y1="30" x2="40" y2="50" />
+          <line class="loader-cross" x1="30" y1="40" x2="50" y2="40" />
+        </svg>
+      </div>
+
+      <div class="load_subtitle">医学动作智能评测系统</div>
       <div class="load_title">正在加载系统资源，请耐心等待</div>
+      <div class="loader-progress"></div>
     </div>
   </div>
   <script type="module" src="/src/main.js"></script>

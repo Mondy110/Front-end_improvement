@@ -103,5 +103,8 @@ defineExpose({
   :deep(.el-scrollbar__wrap) {
     height: 39px;
   }
+  :deep(.el-scrollbar__bar.is-vertical) {
+    display: none;
+  }
 }
 </style>

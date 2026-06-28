@@ -1,0 +1,572 @@
+// ============================================================================
+// Geeker Theme - Merged from Geeker-Admin style system
+// ============================================================================
+// Integrates Geeker's CSS variable system, utility classes, and Element Plus
+// component overrides into the RuoYi project.
+//
+// Conflict resolution with existing RuoYi styles:
+// - .clearfix       : RuoYi version retained (both are functionally equivalent)
+// - .fade-transform-*: RuoYi version retained (different timing: 0.5s vs 0.2s)
+// - .breadcrumb-*   : RuoYi version retained (different transform values)
+// - .el-dialog      : Geeker enhancements added alongside RuoYi base (no conflict)
+// - .el-table       : Geeker CSS-variable-based approach added for dark mode
+// ============================================================================
+
+// ---------------------------------------------------------------------------
+// 1. SCSS Variables
+// ---------------------------------------------------------------------------
+$primary-color: var(--el-color-primary);
+
+// ---------------------------------------------------------------------------
+// 2. CSS Custom Properties (--el- prefixed, from Geeker theme/*.ts)
+//    Light mode defaults; dark mode overrides in html.dark below.
+//    Inverted mode values can be applied at runtime via JS.
+// ---------------------------------------------------------------------------
+:root {
+  /* Aside */
+  --el-aside-logo-text-color: #1E293B;
+  --el-aside-border-color: #E2E8F0;
+
+  /* Header */
+  --el-header-logo-text-color: #1E293B;
+  --el-header-bg-color: #ffffff;
+  --el-header-text-color: #334155;
+  --el-header-text-color-regular: #64748B;
+  --el-header-border-color: #E2E8F0;
+
+  /* Menu */
+  --el-menu-bg-color: #ffffff;
+  --el-menu-hover-bg-color: #F0FDFA;
+  --el-menu-active-bg-color: #F0FDFA;
+  --el-menu-text-color: #334155;
+  --el-menu-active-color: #0D9488;
+  --el-menu-hover-text-color: #0D9488;
+  --el-menu-horizontal-sub-item-height: 50px;
+}
+
+// ---------------------------------------------------------------------------
+// 3. Dark Mode CSS Variable Overrides
+// ---------------------------------------------------------------------------
+html.dark {
+  /* Aside dark */
+  --el-aside-logo-text-color: #E2E8F0;
+  --el-aside-border-color: #1E293B;
+
+  /* Header dark */
+  --el-header-logo-text-color: #E2E8F0;
+  --el-header-bg-color: #0F172A;
+  --el-header-text-color: #F1F5F9;
+  --el-header-text-color-regular: #CBD5E1;
+  --el-header-border-color: #1E293B;
+
+  /* Menu dark */
+  --el-menu-bg-color: #0C1222;
+  --el-menu-hover-bg-color: #1E293B;
+  --el-menu-active-bg-color: #0F1B2D;
+  --el-menu-text-color: #94A3B8;
+  --el-menu-active-color: #14B8A6;
+  --el-menu-hover-text-color: #E2E8F0;
+  --el-menu-horizontal-sub-item-height: 50px;
+}
+
+// ---------------------------------------------------------------------------
+// 4. Inverted Mode (sidebar dark, content light)
+//    Applied at runtime by adding class "inverted" to <html>
+// ---------------------------------------------------------------------------
+html.inverted {
+  /* Aside inverted */
+  --el-aside-logo-text-color: #E2E8F0;
+  --el-aside-border-color: #1E293B;
+
+  /* Header inverted */
+  --el-header-logo-text-color: #E2E8F0;
+  --el-header-bg-color: #0F1B2D;
+  --el-header-text-color: #F1F5F9;
+  --el-header-text-color-regular: #CBD5E1;
+  --el-header-border-color: #1E293B;
+
+  /* Menu inverted */
+  --el-menu-bg-color: #0F1B2D;
+  --el-menu-hover-bg-color: #162236;
+  --el-menu-active-bg-color: #1E293B;
+  --el-menu-text-color: #94A3B8;
+  --el-menu-active-color: #14B8A6;
+  --el-menu-hover-text-color: #E2E8F0;
+  --el-menu-horizontal-sub-item-height: 50px;
+}
+
+// ---------------------------------------------------------------------------
+// 5. Flex Utility Classes
+// ---------------------------------------------------------------------------
+.flx-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.flx-justify-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.flx-align-center {
+  display: flex;
+  align-items: center;
+}
+
+// ---------------------------------------------------------------------------
+// 6. Text Ellipsis & Word Break
+// ---------------------------------------------------------------------------
+/* Single line ellipsis */
+.sle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Multi line ellipsis (2 lines) */
+.mle {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* Word break */
+.break-word {
+  word-break: break-all;
+  word-wrap: break-word;
+}
+
+// ---------------------------------------------------------------------------
+// 7. Scrollbar
+// ---------------------------------------------------------------------------
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--el-border-color-darker);
+  border-radius: 20px;
+}
+
+// ---------------------------------------------------------------------------
+// 8. NProgress
+// ---------------------------------------------------------------------------
+#nprogress .bar {
+  background: var(--el-color-primary) !important;
+}
+#nprogress .spinner-icon {
+  border-top-color: var(--el-color-primary) !important;
+  border-left-color: var(--el-color-primary) !important;
+}
+#nprogress .peg {
+  box-shadow:
+    0 0 10px var(--el-color-primary),
+    0 0 5px var(--el-color-primary) !important;
+}
+
+// ---------------------------------------------------------------------------
+// 9. Margin & Padding Utility Classes (0 ~ 100 px)
+//    Note: RuoYi already has some hardcoded variants (mt5, mt10, mt20 etc.)
+//    Geeker's versions use !important; values match so no functional conflict.
+// ---------------------------------------------------------------------------
+@for $i from 0 through 100 {
+  .mt#{$i} {
+    margin-top: #{$i}px !important;
+  }
+  .mr#{$i} {
+    margin-right: #{$i}px !important;
+  }
+  .mb#{$i} {
+    margin-bottom: #{$i}px !important;
+  }
+  .ml#{$i} {
+    margin-left: #{$i}px !important;
+  }
+  .pt#{$i} {
+    padding-top: #{$i}px !important;
+  }
+  .pr#{$i} {
+    padding-right: #{$i}px !important;
+  }
+  .pb#{$i} {
+    padding-bottom: #{$i}px !important;
+  }
+  .pl#{$i} {
+    padding-left: #{$i}px !important;
+  }
+}
+
+// ===========================================================================
+// Element Plus Component Overrides (from Geeker element.scss)
+// ===========================================================================
+
+/* el-alert */
+.el-alert {
+  border: 1px solid;
+}
+
+/* Page maximize mode */
+.main-maximize {
+  .aside-split,
+  .el-aside,
+  .el-header,
+  .el-footer,
+  .tabs-box {
+    display: none !important;
+  }
+}
+
+/* Mask image (text gradient fade) */
+.mask-image {
+  padding-right: 50px;
+  mask-image: linear-gradient(90deg, #000000 0%, #000000 calc(100% - 50px), transparent);
+}
+
+/* Custom card - 医学系统现代化卡片 */
+.card {
+  box-sizing: border-box;
+  padding: 20px;
+  overflow-x: hidden;
+  background-color: var(--el-bg-color);
+  border: 1px solid var(--el-border-color-lighter, #E2E8F0);
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 4%), 0 1px 2px rgb(0 0 0 / 3%);
+  transition: box-shadow 0.3s;
+}
+
+/* ProTable no-card mode */
+.no-card {
+  .card {
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .table-search {
+    padding: 18px 0 0 !important;
+    margin-bottom: 0 !important;
+  }
+}
+
+/* Content box (common content container) */
+.content-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  .text {
+    margin: 20px 0 30px;
+    font-size: 23px;
+    font-weight: bold;
+    color: var(--el-text-color-regular);
+  }
+  .el-descriptions {
+    width: 100%;
+    padding: 40px 0 0;
+    .el-descriptions__title {
+      font-size: 18px;
+    }
+    .el-descriptions__label {
+      width: 200px;
+    }
+  }
+}
+
+/* Main box (tree table layout, left-right flex) */
+.main-box {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  .table-box {
+    overflow: hidden;
+  }
+}
+
+/* ProTable styles - 医学系统现代化表格 */
+.table-box,
+.table-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+
+  /* Table search - 搜索区域 */
+  .table-search {
+    padding: 16px 0 0;
+    margin-bottom: 12px;
+    .el-form {
+      .el-form-item__content > * {
+        width: 100%;
+      }
+      .el-range-editor.el-input__wrapper {
+        padding: 0 10px;
+      }
+    }
+    .operation {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-bottom: 16px;
+    }
+  }
+
+  /* Table header - 工具栏区域 */
+  .table-header {
+    .header-button-lf,
+    .header-button-ri {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+      .el-button:not(.el-input .el-button) {
+        margin-left: 0;
+      }
+    }
+    .header-button-lf {
+      float: left;
+    }
+    .header-button-ri {
+      float: right;
+    }
+  }
+
+  /* el-table styling - 现代化医学风格 */
+  .el-table {
+    flex: 1;
+    --el-table-border-color: var(--el-border-color-lighter, #E2E8F0);
+    --el-table-header-bg-color: var(--el-fill-color-lighter, #F8FAFC);
+    --el-table-header-text-color: var(--el-text-color-primary, #1E293B);
+    --el-table-row-hover-bg-color: rgba(13, 148, 136, 0.04);
+    --el-table-current-row-bg-color: rgba(13, 148, 136, 0.06);
+
+    /* Fix Safari table misalignment */
+    table {
+      width: 100%;
+    }
+
+    /* 表头 - 更轻量、更精致 */
+    .el-table__header th {
+      height: 44px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--el-text-color-primary, #1E293B);
+      background: var(--el-fill-color-lighter, #F8FAFC);
+      letter-spacing: 0.3px;
+      text-transform: none;
+    }
+
+    /* 行 - 更紧凑、呼吸感 */
+    .el-table__row {
+      height: 48px;
+      font-size: 14px;
+      transition: background-color 0.2s;
+      .move {
+        cursor: move;
+        .el-icon {
+          cursor: move;
+        }
+      }
+    }
+
+    /* 行悬停 - 医学系统主题色微透 */
+    .el-table__body tr:hover > td,
+    .el-table__body tr.hover-row > td {
+      background-color: rgba(13, 148, 136, 0.04) !important;
+    }
+
+    /* 选中行 */
+    .el-table__body tr.current-row > td {
+      background-color: rgba(13, 148, 136, 0.06) !important;
+    }
+
+    /* Header text wrapping */
+    .el-table__header .el-table__cell > .cell {
+      white-space: wrap;
+    }
+
+    /* Empty block centering fix (element-plus) */
+    .el-table__empty-block {
+      position: absolute;
+      .table-empty {
+        line-height: 30px;
+        img {
+          display: inline-flex;
+        }
+      }
+    }
+
+    /* Table image style - 更圆润 */
+    .table-image {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    /* 操作按钮间距优化 */
+    .el-button + .el-button {
+      margin-left: 4px;
+    }
+
+    /* 单元格内边距微调 */
+    .el-table__cell {
+      padding: 0;
+    }
+  }
+
+  /* Pagination */
+  .el-pagination {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+}
+
+/* el-table size variants */
+.el-table--small {
+  .el-table__header th {
+    height: 38px !important;
+    font-size: 13px !important;
+  }
+  .el-table__row {
+    height: 40px !important;
+    font-size: 13px !important;
+  }
+}
+.el-table--large {
+  .el-table__header th {
+    height: 50px !important;
+    font-size: 14px !important;
+  }
+  .el-table__row {
+    height: 56px !important;
+    font-size: 15px !important;
+  }
+}
+
+/* 分页器现代化样式 - 医学系统主题 */
+.el-pagination {
+  margin-top: 16px;
+  padding: 4px 0;
+
+  /* 页码按钮圆角 */
+  .el-pager li {
+    border-radius: 6px;
+    font-weight: 500;
+    min-width: 32px;
+    height: 32px;
+    line-height: 32px;
+    transition: all 0.2s;
+
+    &:hover {
+      color: var(--el-color-primary, #0D9488);
+    }
+
+    &.is-active {
+      background: var(--el-color-primary, #0D9488) !important;
+      color: #fff !important;
+      font-weight: 600;
+    }
+  }
+
+  /* 前进/后退按钮 */
+  .btn-prev,
+  .btn-next {
+    border-radius: 6px;
+    min-width: 32px;
+    height: 32px;
+    transition: all 0.2s;
+  }
+
+  /* 跳转输入框 */
+  .el-pagination__jump {
+    font-size: 13px;
+    color: var(--el-text-color-regular, #475569);
+
+    .el-input__wrapper {
+      border-radius: 6px;
+    }
+  }
+}
+
+/* el-drawer */
+.el-drawer {
+  .el-drawer__header {
+    padding: 16px 20px;
+    margin-bottom: 0;
+    border-bottom: 1px solid var(--el-border-color-lighter);
+    span {
+      font-size: 17px;
+      line-height: 17px;
+      color: var(--el-text-color-primary) !important;
+    }
+  }
+  .el-drawer__footer {
+    border-top: 1px solid var(--el-border-color-lighter);
+  }
+  .el-select {
+    width: 100%;
+  }
+  .drawer-multiColumn-form {
+    display: flex;
+    flex-wrap: wrap;
+    .el-form-item {
+      width: 47%;
+      &:nth-child(2n-1) {
+        margin-right: 5%;
+      }
+    }
+  }
+}
+
+/* el-dialog (Geeker enhancements, additive to RuoYi's base) */
+.el-dialog {
+  padding: 0;
+  .el-dialog__header {
+    padding: 15px 20px;
+    margin: 0;
+    border-bottom: 1px solid var(--el-border-color-lighter);
+    .el-dialog__title {
+      font-size: 17px;
+    }
+  }
+  .el-dialog__body,
+  .el-dialog__footer {
+    padding: 15px 20px;
+  }
+}
+
+// ===========================================================================
+// Dark Mode Component Overrides (from Geeker element-dark.scss)
+// ===========================================================================
+html.dark {
+  /* Login container dark - 医学系统风格 */
+  .login-container {
+    .login-right {
+      background: #1E293B !important;
+      .form-title {
+        color: #F1F5F9 !important;
+      }
+      .form-desc {
+        color: #64748B !important;
+      }
+    }
+    .login-footer {
+      color: #475569 !important;
+    }
+  }
+  .register-container {
+    .register-right {
+      background: #1E293B !important;
+      .form-title {
+        color: #F1F5F9 !important;
+      }
+      .form-desc {
+        color: #64748B !important;
+      }
+    }
+  }
+}

@@ -37,8 +37,8 @@ function addIframe() {
 
 <style lang="scss" scoped>
 .app-main {
-  /* 50= navbar  50  */
-  min-height: calc(100vh - 50px);
+  /* 55 = navbar height */
+  min-height: calc(100vh - 55px);
   width: 100%;
   position: relative;
   overflow: hidden;
@@ -49,17 +49,17 @@ function addIframe() {
 }
 
 .fixed-header + .app-main {
-  padding-top: 50px;
+  padding-top: 55px;
 }
 
 .hasTagsView {
   .app-main {
-    /* 84 = navbar + tags-view = 50 + 34 */
-    min-height: calc(100vh - 84px);
+    /* 95 = navbar + tags-view = 55 + 40 */
+    min-height: calc(100vh - 95px);
   }
 
   .fixed-header + .app-main {
-    padding-top: 84px;
+    padding-top: 95px;
   }
 }
 </style>
@@ -70,20 +70,6 @@ function addIframe() {
   .fixed-header {
     padding-right: 6px;
   }
-}
-
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background-color: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #c0c0c0;
-  border-radius: 3px;
 }
 </style>
 

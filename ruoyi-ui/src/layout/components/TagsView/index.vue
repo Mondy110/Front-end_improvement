@@ -8,7 +8,6 @@
         :class="{ 'active': isActive(tag), 'has-icon': tagsIcon }"
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
         class="tags-view-item"
-        :style="activeStyle(tag)"
         @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''"
         @contextmenu.prevent="openMenu(tag, $event)"
       >
@@ -89,10 +88,7 @@ function isActive(r) {
 
 function activeStyle(tag) {
   if (!isActive(tag)) return {}
-  return {
-    "background-color": theme.value,
-    "border-color": theme.value
-  }
+  return {}
 }
 
 function isAffix(tag) {
@@ -261,54 +257,76 @@ function handleScroll() {
 
 <style lang="scss" scoped>
 .tags-view-container {
-  height: 34px;
+  height: 40px;
   width: 100%;
-  background: var(--tags-bg, #fff);
-  border-bottom: 1px solid var(--tags-item-border, #d8dce5);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
+  background: var(--el-bg-color);
+  border-bottom: 1px solid var(--el-border-color-light);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .06);
 
   .tags-view-wrapper {
     .tags-view-item {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
       position: relative;
       cursor: pointer;
-      height: 26px;
-      line-height: 26px;
-      border: 1px solid var(--tags-item-border, #d8dce5);
-      color: var(--tags-item-text, #495060);
-      background: var(--tags-item-bg, #fff);
-      padding: 0 8px;
+      height: 28px;
+      line-height: 28px;
+      border: 1px solid var(--el-border-color-lighter, #e4e7ed);
+      border-radius: 4px;
+      color: var(--el-text-color-regular, #495060);
+      background: var(--el-bg-color, #fff);
+      padding: 0 10px;
       font-size: 12px;
-      margin-left: 5px;
-      margin-top: 4px;
+      margin-left: 6px;
+      margin-top: 5px;
+      transition: all 0.3s;
 
       &:first-of-type {
-        margin-left: 15px;
+        margin-left: 12px;
       }
 
       &:last-of-type {
-        margin-right: 15px;
+        margin-right: 12px;
+      }
+
+      &:hover {
+        color: var(--el-color-primary);
+        background-color: var(--el-color-primary-light-9, #ecf5ff);
       }
 
       &.active {
-        background-color: #42b983;
-        color: #fff;
-        border-color: #42b983;
+        color: var(--el-color-primary);
+        background-color: var(--el-color-primary-light-9, #ecf5ff);
+        border-color: var(--el-color-primary-light-7, #c6e2ff);
 
+        /* 底部高亮线 */
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: -1px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 60%;
+          height: 2px;
+          background-color: var(--el-color-primary);
+          border-radius: 2px;
+        }
+
+        /* 灵动小白点（无图标时显示） */
         &::before {
           content: '';
-          background: #fff;
+          background: var(--el-color-primary);
           display: inline-block;
           width: 8px;
           height: 8px;
           border-radius: 50%;
-          position: relative;
-          margin-right: 5px;
+          margin-right: 4px;
         }
       }
     }
   }
 
+  /* 有图标时不显示小白点 */
   .tags-view-item.active.has-icon::before {
     content: none !important;
   }
@@ -320,20 +338,23 @@ function handleScroll() {
     position: absolute;
     list-style-type: none;
     padding: 5px 0;
-    border-radius: 4px;
+    border-radius: 6px;
     font-size: 12px;
     font-weight: 400;
-    color: var(--tags-item-text, #333);
-    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .3);
+    color: var(--el-text-color-regular, #333);
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
     border: 1px solid var(--el-border-color-light, #e4e7ed);
 
     li {
       margin: 0;
       padding: 7px 16px;
       cursor: pointer;
+      border-radius: 4px;
+      transition: background 0.2s;
 
       &:hover {
-        background: var(--tags-item-hover, #eee);
+        background: var(--el-color-primary-light-9, #ecf5ff);
+        color: var(--el-color-primary);
       }
     }
   }
@@ -341,7 +362,7 @@ function handleScroll() {
 </style>
 
 <style lang="scss">
-//reset element css of el-icon-close
+/* Reset element css of el-icon-close */
 .tags-view-wrapper {
   .tags-view-item {
     .el-icon-close {
@@ -360,7 +381,7 @@ function handleScroll() {
       }
 
       &:hover {
-        background-color: var(--tags-close-hover, #b4bccc);
+        background-color: var(--el-color-primary);
         color: #fff;
         width: 12px !important;
         height: 12px !important;

@@ -78,10 +78,11 @@
   .el-table__header-wrapper, .el-table__fixed-header-wrapper {
     th {
       word-break: break-word;
-      background-color: #f8f8f9 !important;
-      color: #515a6e;
-      height: 40px !important;
+      background-color: var(--el-fill-color-lighter, #f8fafc) !important;
+      color: var(--el-text-color-primary, #334155);
+      height: 44px !important;
       font-size: 13px;
+      font-weight: 600;
     }
   }
   .el-table__body-wrapper {
@@ -151,7 +152,7 @@
 /** 表格更多操作下拉样式 */
 .el-table .el-dropdown-link {
   cursor: pointer;
-  color: #409EFF;
+  color: var(--el-color-primary, #0D9488);
   margin-left: 10px;
 }
 
@@ -204,21 +205,21 @@
 /* button color */
 .el-button--cyan.is-active,
 .el-button--cyan:active {
-  background: #20B2AA;
-  border-color: #20B2AA;
+  background: #0F766E;
+  border-color: #0F766E;
   color: #FFFFFF;
 }
 
 .el-button--cyan:focus,
 .el-button--cyan:hover {
-  background: #48D1CC;
-  border-color: #48D1CC;
+  background: #14B8A6;
+  border-color: #14B8A6;
   color: #FFFFFF;
 }
 
 .el-button--cyan {
-  background-color: #20B2AA;
-  border-color: #20B2AA;
+  background-color: #0D9488;
+  border-color: #0D9488;
   color: #FFFFFF;
 }
 
@@ -276,7 +277,7 @@
 .sortable-ghost{
   opacity: .8;
   color: #fff!important;
-  background: #42b983!important;
+  background: var(--el-color-primary, #0D9488) !important;
 }
 
 /* 表格右侧工具栏样式 */

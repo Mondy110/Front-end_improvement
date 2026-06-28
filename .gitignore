@@ -48,5 +48,13 @@ nbdist/
 ######################################################################
 application-self.yml
 .vscode/
-
-
+node_modules
+ruoyi-admin
+ruoyi-common
+ruoyi-framework
+ruoyi-generator
+ruoyi-quartz
+sql
+whut-medical
+whut-model-service
+ruoyi-system

@@ -42,7 +42,7 @@ const getLogoTextColor = computed(() => {
   if (settingsStore.isDark) {
     return 'var(--sidebar-text)'
   }
-  return sideTheme.value === 'theme-dark' ? '#fff' : variables.menuLightText
+  return sideTheme.value === 'theme-dark' ? '#fff' : '#0F172A'
 })
 </script>
 
@@ -57,40 +57,45 @@ const getLogoTextColor = computed(() => {
 }
 
 .sidebar-logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
   width: 100%;
-  height: 50px;
-  line-height: 50px;
+  height: 55px;
   background: v-bind(getLogoBackground);
-  text-align: center;
+  border-bottom: 1px solid var(--el-aside-border-color, transparent);
   overflow: hidden;
 
   & .sidebar-logo-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 100%;
     width: 100%;
+    gap: 12px;
 
     & .sidebar-logo {
-      width: 32px;
-      height: 32px;
-      vertical-align: middle;
-      margin-right: 12px;
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
     }
 
     & .sidebar-title {
-      display: inline-block;
       margin: 0;
       color: v-bind(getLogoTextColor);
-      font-weight: 600;
-      line-height: 50px;
-      font-size: 14px;
-      font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
-      vertical-align: middle;
+      font-weight: 700;
+      font-size: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 
   &.collapse {
-    .sidebar-logo {
-      margin-right: 0px;
+    .sidebar-logo-link {
+      gap: 0;
     }
   }
 }

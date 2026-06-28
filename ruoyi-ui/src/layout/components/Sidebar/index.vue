@@ -71,7 +71,7 @@ const activeMenu = computed(() => {
 <style lang="scss" scoped>
 .sidebar-container {
   background-color: v-bind(getMenuBackground);
-  
+
   .scrollbar-wrapper {
     background-color: v-bind(getMenuBackground);
   }
@@ -80,24 +80,57 @@ const activeMenu = computed(() => {
     border: none;
     height: 100%;
     width: 100% !important;
-    
-    .el-menu-item, .el-sub-menu__title {
+
+    .el-menu-item,
+    .el-sub-menu__title {
+      height: 50px;
+      line-height: 50px;
+      transition: all 0.3s;
+
       &:hover {
-        background-color: var(--menu-hover, rgba(0, 0, 0, 0.06)) !important;
+        color: var(--el-menu-hover-text-color, v-bind(getMenuTextColor)) !important;
+        background-color: transparent !important;
+      }
+
+      .svg-icon {
+        margin-right: 14px;
+        font-size: 18px;
+        vertical-align: middle;
       }
     }
 
     .el-menu-item {
       color: v-bind(getMenuTextColor);
-      
+      position: relative;
+
       &.is-active {
-        color: var(--menu-active-text, #409eff);
-        background-color: var(--menu-hover, rgba(0, 0, 0, 0.06)) !important;
+        color: var(--el-menu-active-color, #0D9488) !important;
+        background-color: var(--el-menu-active-bg-color, #F0FDFA) !important;
+
+        /* Geeker 风格：左侧高亮竖条 */
+        &::before {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          width: 4px;
+          content: "";
+          background-color: var(--el-color-primary);
+          border-radius: 0 4px 4px 0;
+        }
       }
     }
 
     .el-sub-menu__title {
       color: v-bind(getMenuTextColor);
+    }
+
+    /* 折叠模式下激活态样式 */
+    .el-menu--collapse {
+      .is-active .el-sub-menu__title {
+        color: #ffffff !important;
+        background-color: var(--el-color-primary) !important;
+      }
     }
   }
 }

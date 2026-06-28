@@ -106,7 +106,7 @@ const showSettings = ref(false)
 const theme = ref(settingsStore.theme)
 const sideTheme = ref(settingsStore.sideTheme)
 const storeSettings = computed(() => settingsStore)
-const predefineColors = ref(["#409EFF", "#ff4500", "#ff8c00", "#ffd700", "#90ee90", "#00ced1", "#1e90ff", "#c71585"])
+const predefineColors = ref(["#0D9488", "#06B6D4", "#2563EB", "#7C3AED", "#DB2777", "#EA580C", "#65A30D", "#475569"])
 
 /** 是否需要topnav */
 function topNavChange(val) {

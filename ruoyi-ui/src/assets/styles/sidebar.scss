@@ -24,8 +24,8 @@
     left: 0;
     z-index: 1001;
     overflow: hidden;
-    -webkit-box-shadow: 2px 0 6px rgba(0,21,41,.35);
-    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 2px 0 8px rgba(0,21,41,.08);
+    box-shadow: 2px 0 6px rgba(0, 0, 0, 0.06);
 
     // reset element-ui css
     .horizontal-collapse-transition {
@@ -80,11 +80,11 @@
       display: inline-block !important;
     }
 
-    // menu hover
+    // menu hover - 浅色主题使用 teal 微透
     .sub-menu-title-noDropdown,
     .el-sub-menu__title {
       &:hover {
-        background-color: rgba(0, 0, 0, 0.06) !important;
+        background-color: var(--el-menu-hover-bg-color, #F0FDFA) !important;
       }
     }
 
@@ -97,7 +97,7 @@
       min-width: vars.$base-sidebar-width !important;
 
       &:hover {
-        background-color: rgba(0, 0, 0, 0.06) !important;
+        background-color: var(--el-menu-hover-bg-color, #F0FDFA) !important;
       }
     }
 
@@ -212,8 +212,7 @@
   .nest-menu .el-sub-menu>.el-sub-menu__title,
   .el-menu-item {
     &:hover {
-      // you can use $sub-menuHover
-      background-color: rgba(0, 0, 0, 0.06) !important;
+      background-color: var(--el-menu-hover-bg-color, #F0FDFA) !important;
     }
   }
 

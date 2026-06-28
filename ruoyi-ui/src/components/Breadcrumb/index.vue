@@ -85,13 +85,29 @@ getBreadcrumb()
 
 <style lang='scss' scoped>
 .app-breadcrumb.el-breadcrumb {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   font-size: 14px;
-  line-height: 50px;
+  line-height: 55px;
   margin-left: 8px;
 
+  :deep(.el-breadcrumb__item) {
+    .el-breadcrumb__inner {
+      color: var(--el-header-text-color, #303133);
+      font-weight: 400;
+
+      &.is-link:hover {
+        color: var(--el-color-primary);
+      }
+    }
+
+    &:last-child .el-breadcrumb__inner {
+      color: var(--el-header-text-color-regular, #606266);
+    }
+  }
+
   .no-redirect {
-    color: #97a8be;
+    color: var(--el-header-text-color-regular, #97a8be);
     cursor: text;
   }
 }

@@ -1,42 +1,42 @@
-// base color
-$blue: #324157;
-$light-blue: #333c46;
-$red: #C03639;
+// base color - 医学动作智能评测系统配色
+$blue: #1E3A5F;
+$light-blue: #2A5080;
+$red: #DC2626;
 $pink: #E65D6E;
-$green: #30B08F;
-$tiffany: #4AB7BD;
-$yellow: #FEC171;
-$panGreen: #30B08F;
+$green: #0D9488;
+$tiffany: #14B8A6;
+$yellow: #F59E0B;
+$panGreen: #10B981;
 
-// 默认主题变量
-$menuText: #bfcbd9;
-$menuActiveText: #409eff;
-$menuBg: #304156;
-$menuHover: #263445;
+// 默认主题变量 - 深色医学科技风格
+$menuText: #94A3B8;
+$menuActiveText: #14B8A6;
+$menuBg: #0F1B2D;
+$menuHover: #162236;
 
 // 浅色主题theme-light
 $menuLightBg: #ffffff;
-$menuLightHover: #f0f1f5;
-$menuLightText: #303133;
-$menuLightActiveText: #409EFF;
+$menuLightHover: #F0FDFA;
+$menuLightText: #334155;
+$menuLightActiveText: #0D9488;
 
 // 基础变量
 $base-sidebar-width: 200px;
 $sideBarWidth: 200px;
 
 // 菜单暗色变量
-$base-menu-color: #bfcbd9;
-$base-menu-color-active: #f4f4f5;
-$base-menu-background: #304156;
-$base-sub-menu-background: #1f2d3d;
-$base-sub-menu-hover: #001528;
+$base-menu-color: #94A3B8;
+$base-menu-color-active: #F0FDFA;
+$base-menu-background: #0F1B2D;
+$base-sub-menu-background: #0A1525;
+$base-sub-menu-hover: #162236;
 
 // 组件变量
-$--color-primary: #409EFF;
-$--color-success: #67C23A;
-$--color-warning: #E6A23C;
-$--color-danger: #F56C6C;
-$--color-info: #909399;
+$--color-primary: #0D9488;
+$--color-success: #10B981;
+$--color-warning: #F59E0B;
+$--color-danger: #EF4444;
+$--color-info: #64748B;
 
 :export {
   menuText: $menuText;
@@ -67,64 +67,84 @@ $--color-info: #909399;
 
 // CSS变量定义
 :root {
-  /* 亮色模式变量 */
+  /* 亮色模式变量 - 医学科技风格 */
   --sidebar-bg: #{$menuBg};
   --sidebar-text: #{$menuText};
   --menu-hover: #{$menuHover};
-  
+
   --navbar-bg: #ffffff;
-  --navbar-text: #303133;
-  
+  --navbar-text: #1E293B;
+
   /* splitpanes default-theme 变量 */
   --splitpanes-default-bg: #ffffff;
 
+  /* 医学系统自定义变量 */
+  --med-primary: #0D9488;
+  --med-primary-light: #14B8A6;
+  --med-primary-dark: #0F766E;
+  --med-bg-deep: #0C1222;
+  --med-bg-panel: #F8FAFC;
+  --med-text-heading: #0F172A;
+  --med-text-body: #475569;
+  --med-text-muted: #94A3B8;
+  --med-border: #E2E8F0;
+  --med-accent-blue: #1E3A5F;
+  --med-accent-cyan: #06B6D4;
 }
 
 // 暗黑模式变量
 html.dark {
   /* 默认通用 */
-  --el-bg-color: #141414;
-  --el-bg-color-overlay: #1d1e1f;
-  --el-text-color-primary: #ffffff;
-  --el-text-color-regular: #d0d0d0;
-  --el-border-color: #434343;
-  --el-border-color-light: #434343;
+  --el-bg-color: #0F172A;
+  --el-bg-color-overlay: #1E293B;
+  --el-text-color-primary: #F1F5F9;
+  --el-text-color-regular: #CBD5E1;
+  --el-border-color: #334155;
+  --el-border-color-light: #1E293B;
 
   /* 侧边栏 */
-  --sidebar-bg: #141414;
-  --sidebar-text: #ffffff;
-  --menu-hover: #2d2d2d;
-  --menu-active-text: #{$menuActiveText};
+  --sidebar-bg: #0C1222;
+  --sidebar-text: #E2E8F0;
+  --menu-hover: #1E293B;
+  --menu-active-text: #14B8A6;
 
   /* 顶部导航栏 */
-  --navbar-bg: #141414;
-  --navbar-text: #ffffff;
-  --navbar-hover: #141414;
+  --navbar-bg: #0F172A;
+  --navbar-text: #F1F5F9;
+  --navbar-hover: #1E293B;
 
   /* 标签栏 */
-  --tags-bg: #141414;
-  --tags-item-bg: #1d1e1f;
-  --tags-item-border: #303030;
-  --tags-item-text: #d0d0d0;
-  --tags-item-hover: #2d2d2d;
-  --tags-close-hover: #64666a;
+  --tags-bg: #0F172A;
+  --tags-item-bg: #1E293B;
+  --tags-item-border: #334155;
+  --tags-item-text: #CBD5E1;
+  --tags-item-hover: #334155;
+  --tags-close-hover: #64748B;
 
   /* splitpanes 组件暗黑模式变量 */
-  --splitpanes-bg: #141414;
-  --splitpanes-border: #303030;
-  --splitpanes-splitter-bg: #1d1e1f;
-  --splitpanes-splitter-hover-bg: #2d2d2d;
+  --splitpanes-bg: #0F172A;
+  --splitpanes-border: #334155;
+  --splitpanes-splitter-bg: #1E293B;
+  --splitpanes-splitter-hover-bg: #334155;
 
   /* blockquote 暗黑模式变量 */
-  --blockquote-bg: #1d1e1f;
-  --blockquote-border: #303030;
-  --blockquote-text: #d0d0d0;
-  
+  --blockquote-bg: #1E293B;
+  --blockquote-border: #334155;
+  --blockquote-text: #CBD5E1;
+
   /* Cron 时间表达式 模式变量 */
-  --cron-border: #303030;
+  --cron-border: #334155;
 
   /* splitpanes default-theme 暗黑模式变量 */
-  --splitpanes-default-bg: #141414;
+  --splitpanes-default-bg: #0F172A;
+
+  /* 医学系统暗黑模式变量 */
+  --med-bg-deep: #0A0F1A;
+  --med-bg-panel: #1E293B;
+  --med-text-heading: #F1F5F9;
+  --med-text-body: #CBD5E1;
+  --med-text-muted: #64748B;
+  --med-border: #334155;
 
   /* 侧边栏菜单覆盖 */
    .sidebar-container {
@@ -173,17 +193,17 @@ html.dark {
     }
   }
 
-  /* 表格样式覆盖 */
+  /* 表格样式覆盖 - 医学系统暗黑模式 */
   .el-table {
-    --el-table-header-bg-color: var(--el-bg-color-overlay) !important;
-    --el-table-header-text-color: var(--el-text-color-regular) !important;
-    --el-table-border-color: var(--el-border-color-light) !important;
-    --el-table-row-hover-bg-color: var(--el-bg-color-overlay) !important;
+    --el-table-header-bg-color: #1E293B !important;
+    --el-table-header-text-color: #CBD5E1 !important;
+    --el-table-border-color: #334155 !important;
+    --el-table-row-hover-bg-color: rgba(13, 148, 136, 0.06) !important;
 
     .el-table__header-wrapper, .el-table__fixed-header-wrapper {
       th {
-        background-color: var(--el-bg-color-overlay, #f8f8f9) !important;
-        color: var(--el-text-color-regular, #515a6e);
+        background-color: #1E293B !important;
+        color: #CBD5E1;
       }
     }
   }
